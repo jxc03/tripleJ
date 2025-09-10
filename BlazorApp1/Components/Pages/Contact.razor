@@ -1,0 +1,111 @@
+@page "/contact"
+@inject ILogger<Contact> Logger
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Contact Us</PageTitle>
+
+<h1>Contact Us</h1>
+<p>
+    Do you have any questions or a request to build? 
+    Contact us below and we will get back to you as soon as possible!
+</p>
+
+@* Form with validation *@  
+<EditForm Model="@contactModel" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" FormName="ContactForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    @* User's name *@
+    <div class="mb-3">
+        <label for="name">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="contactModel.Name" placeholder="Enter your fullname"/>
+        <ValidationMessage For="@(() => contactModel.Name)" />
+    </div>
+
+    @* User's email *@
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" type="email" class="form-control" @bind-Value="contactModel.Email" placeholder="Enter your email"/>
+        <ValidationMessage For="@(() => contactModel.Email)" />
+    </div>
+
+    @* User's subject title *@
+    <div class="mb-3">
+        <label for="subject">Subject</label>
+        <InputText id="subject" class="form-control" @bind-Value="contactModel.Subject" placeholder="Enter the title of the message"/>
+        <ValidationMessage For="@(() => contactModel.Subject)" />
+    </div>
+
+    @* User's message *@
+    <div class="mb-3">
+        <label for="message">Message</label>
+        <InputTextArea id="message" class="form-control" @bind-Value="contactModel.Message" placeholder="Enter your message"/>
+        <ValidationMessage For="@(() => contactModel.Message)" />
+    </div>
+
+    @* Submit button *@
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@* Feedback message depending if valid or invalid *@
+@if (!string.IsNullOrEmpty(feedbackMessage))
+{
+    <div class="alert @feedbackClass mt-3">@feedbackMessage</div>
+}
+
+@code 
+{
+    /// <summary>
+    /// Holds the data entered by the user in the contact form.
+    /// </summary>
+    private ContactModel contactModel = new();
+
+    /// <summary>
+    /// Stores the feedback message displayed to the user after submission.
+    /// </summary>
+    private string? feedbackMessage;
+
+    /// <summary>
+    /// Determines the CSS class for styling the feedback message (success or error).
+    /// </summary>
+    private string feedbackClass = "";
+
+    /// <summary>
+    /// Handles successful form submission when all validation rules pass.
+    /// </summary>
+
+    private void HandleValidSubmit()
+    {
+        // Simulate success
+        feedbackMessage = "Your message has been sent successfully!";
+        feedbackClass = "alert-success";
+    }
+
+    /// <summary>
+    /// Handles invalid form submission when validation fails.
+    /// </summary>
+    private void HandleInvalidSubmit()
+    {
+        feedbackMessage = "There was a problem with your submission. Please check the form and try again.";
+        feedbackClass = "alert-danger";
+    }
+
+    /// <summary>
+    /// Represents the data submitted through the contact form with validation
+    /// </summary>
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Please enter your name.")]
+        public string? Name { get; set; }
+
+        [Required(ErrorMessage = "Please enter your email address.")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        public string? Email { get; set; }
+
+        [Required(ErrorMessage = "Please enter a subject.")]
+        public string? Subject { get; set; }
+
+        [Required(ErrorMessage = "Please enter a message.")]
+        public string? Message { get; set; }
+    }
+}
