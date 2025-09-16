@@ -10,41 +10,84 @@
     Contact us below and we will get back to you as soon as possible!
 </p>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
 @* Form with validation *@  
-<EditForm Model="@contactModel" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" FormName="ContactForm">
+<EditForm Model="@contactModel" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInvalidSubmit" FormName="ContactForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    @* User's name *@
-    <div class="mb-3">
-        <label for="name">Name</label>
-        <InputText id="name" class="form-control" @bind-Value="contactModel.Name" placeholder="Enter your fullname"/>
-        <ValidationMessage For="@(() => contactModel.Name)" />
+    @* Old code
+    <div class="form-floating mb-3">
+        <InputText  id="name" 
+                    class="form-control" 
+                    @bind-Value="contactModel.Name"/> 
+        <label for="name"><i>Enter your name</i></label>
+        <ValidationMessage For="@(() => contactModel.Name)"/>
     </div>
+    *@
 
-    @* User's email *@
-    <div class="mb-3">
-        <label for="email">Email</label>
-        <InputText id="email" type="email" class="form-control" @bind-Value="contactModel.Email" placeholder="Enter your email"/>
-        <ValidationMessage For="@(() => contactModel.Email)" />
+    @* Name input *@
+    <ValidationMessage For="@(() => contactModel.Name)" class="text-danger"/>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="bi bi-person"></i>
+        </span>
+        <div class="form-floating">
+            <InputText id="name" 
+                       class="form-control" 
+                       @bind-Value="contactModel.Name"/> 
+            <label for="name"><i>Name</i></label>
+        </div>
     </div>
-
-    @* User's subject title *@
-    <div class="mb-3">
-        <label for="subject">Subject</label>
-        <InputText id="subject" class="form-control" @bind-Value="contactModel.Subject" placeholder="Enter the title of the message"/>
-        <ValidationMessage For="@(() => contactModel.Subject)" />
+    
+    @* Email input *@
+    <ValidationMessage For="@(() => contactModel.Email)" class="text-danger"/>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="bi bi-envelope"></i>
+        </span>
+        <div class="form-floating">
+            <InputText id="email" 
+                       type="email"
+                       class="form-control" 
+                       @bind-Value="contactModel.Email"/> 
+            <label for="email"><i>Email</i></label>
+        </div>
     </div>
-
-    @* User's message *@
-    <div class="mb-3">
-        <label for="message">Message</label>
-        <InputTextArea id="message" class="form-control" @bind-Value="contactModel.Message" placeholder="Enter your message"/>
-        <ValidationMessage For="@(() => contactModel.Message)" />
+    
+    @* Subject title input *@
+    <ValidationMessage For="@(() => contactModel.Subject)" class="text-danger"/>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="bi bi-chat-dots"></i>
+        </span>
+        <div class="form-floating">
+            <InputText id="subject" 
+                       class="form-control" 
+                       @bind-Value="contactModel.Subject"/> 
+            <label for="subject"><i>Subject</i></label>
+        </div>
     </div>
-
+    
+    @* Message input *@
+    <ValidationMessage For="@(() => contactModel.Message)" class="text-danger"/>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="bi bi-pencil-square"></i>
+        </span>
+        <div class="form-floating">
+            <InputTextArea id="message" 
+                           class="form-control" 
+                           @bind-Value="contactModel.Message"/> 
+            <label for="message"><i>Message</i></label>
+        </div>
+    </div>
+    
     @* Submit button *@
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-send me-2"></i>Submit
+    </button>
 </EditForm>
 
 @* Feedback message depending if valid or invalid *@
@@ -55,57 +98,53 @@
 
 @code 
 {
-    /// <summary>
-    /// Holds the data entered by the user in the contact form.
-    /// </summary>
-    private ContactModel contactModel = new();
+    /// Holds the data entered by the user in the contact form
+    [SupplyParameterFromForm]
+    private ContactModel contactModel { get; set; } = new();
 
-    /// <summary>
-    /// Stores the feedback message displayed to the user after submission.
-    /// </summary>
+    /// Stores the feedback message displayed to the user after submission
     private string? feedbackMessage;
 
-    /// <summary>
-    /// Determines the CSS class for styling the feedback message (success or error).
-    /// </summary>
+    /// Determines the CSS class for styling the feedback message (success or error)
     private string feedbackClass = "";
 
-    /// <summary>
-    /// Handles successful form submission when all validation rules pass.
-    /// </summary>
-
+    @* Handles successful form submission when all validation rules pass *@
+    // TODO: Tweak to log
     private void HandleValidSubmit()
     {
-        // Simulate success
-        feedbackMessage = "Your message has been sent successfully!";
+        feedbackMessage = "✅ Your message has been submitted successfully!";
         feedbackClass = "alert-success";
+        Logger.LogInformation("Submit button clicked. Name: {Name}, Email: {Email}, Subject: {Subject}",
+            contactModel.Name, contactModel.Email, contactModel.Subject);
     }
 
-    /// <summary>
-    /// Handles invalid form submission when validation fails.
-    /// </summary>
+    @* Handles invalid form submission when validation fails *@ 
+    // TODO: Tweak to log
     private void HandleInvalidSubmit()
     {
-        feedbackMessage = "There was a problem with your submission. Please check the form and try again.";
+        feedbackMessage = "❌ Please fill in all required fields.";
         feedbackClass = "alert-danger";
+        Logger.LogWarning("Invalid: {Name}, {Email}, {Subject}, {Message}");
     }
 
-    /// <summary>
+    @* Contact Model .cs *@
     /// Represents the data submitted through the contact form with validation
-    /// </summary>
     public class ContactModel
     {
-        [Required(ErrorMessage = "Please enter your name.")]
+        [Required(ErrorMessage = "Please enter your name")]
+        [StringLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
         public string? Name { get; set; }
 
-        [Required(ErrorMessage = "Please enter your email address.")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address.")]
+        [Required(ErrorMessage = "Please enter your email address")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
         public string? Email { get; set; }
 
-        [Required(ErrorMessage = "Please enter a subject.")]
+        [Required(ErrorMessage = "Please enter a subject title")]
+        [StringLength(50, ErrorMessage = "Subject title cannot exceed 50 characters")]
         public string? Subject { get; set; }
 
-        [Required(ErrorMessage = "Please enter a message.")]
+        [Required(ErrorMessage = "Please enter a message")]
+        [MinLength(10, ErrorMessage = "Message must be at least 10 characters long")]
         public string? Message { get; set; }
     }
 }

@@ -203,3 +203,15 @@ main[b-j65y7q72mt] {
         overflow-y: auto;
     }
 }
+/* _content/BlazorApp1/Components/Pages/Contact.razor.rz.scp.css */
+/* Target floating label inputs */
+.form-floating > .form-control[b-q24x7jaba7],
+.form-floating > .form-select[b-q24x7jaba7] {
+    height: calc(3.5rem + 0.5rem); /* increase height */
+    line-height: 1.5;
+}
+
+/* Adjust the label position so it stays vertically centered initially */
+.form-floating > label[b-q24x7jaba7] {
+    padding-top: 1rem; /* more space above text */
+}

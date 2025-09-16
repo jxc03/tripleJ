@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jcari\\Documents\\tripleJ\\blazorapp1\\BlazorApp1.csproj": {}
+    "C:\\Users\\jcari\\Documents\\tripleJ\\BlazorApp1\\BlazorApp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jcari\\Documents\\tripleJ\\blazorapp1\\BlazorApp1.csproj": {
+    "C:\\Users\\jcari\\Documents\\tripleJ\\BlazorApp1\\BlazorApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jcari\\Documents\\tripleJ\\blazorapp1\\BlazorApp1.csproj",
+        "projectUniqueName": "C:\\Users\\jcari\\Documents\\tripleJ\\BlazorApp1\\BlazorApp1.csproj",
         "projectName": "BlazorApp1",
-        "projectPath": "C:\\Users\\jcari\\Documents\\tripleJ\\blazorapp1\\BlazorApp1.csproj",
+        "projectPath": "C:\\Users\\jcari\\Documents\\tripleJ\\BlazorApp1\\BlazorApp1.csproj",
         "packagesPath": "C:\\Users\\jcari\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jcari\\Documents\\tripleJ\\blazorapp1\\obj\\",
+        "outputPath": "C:\\Users\\jcari\\Documents\\tripleJ\\BlazorApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -50,6 +50,16 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.13.0, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.13.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

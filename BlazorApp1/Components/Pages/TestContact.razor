@@ -1,0 +1,89 @@
+@page "/testContact"
+@inject ILogger<TestContact> Logger
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>Testing Contact</PageTitle>
+
+<h1>Testing Contact</h1>
+
+<EditForm Model="@contactModel" OnValidSubmit="@CreateEmail" FormName="TestContactForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+    
+    <div class="mb-3">
+        <label for="name">Name *</label>
+        <InputText id="name" class="form-control" @bind-Value="contactModel.Name" placeholder="Enter your fullname"/>
+        <ValidationMessage For="() => contactModel.Name" class="text-danger" />
+    </div>
+
+    <div class="mb-3">
+        <label for="email">Email *</label>
+        <InputText id="email" type="email" class="form-control" @bind-Value="contactModel.Email" placeholder="Enter your email"/>
+        <ValidationMessage For="() => contactModel.Email" class="text-danger" />
+    </div>
+
+    <div class="mb-3">
+        <label for="subject">Subject *</label>
+        <InputText id="subject" class="form-control" @bind-Value="contactModel.Subject" placeholder="Enter the title of the message"/>
+        <ValidationMessage For="() => contactModel.Subject" class="text-danger" />
+    </div>
+
+    <div class="mb-3">
+        <label for="message">Message *</label>
+        <InputTextArea id="message" class="form-control" @bind-Value="contactModel.Message" placeholder="Enter your message"/>
+        <ValidationMessage For="() => contactModel.Message" class="text-danger" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(submitMessage))
+{
+    <div class="alert alert-success mt-3">@submitMessage</div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mt-3">@errorMessage</div>
+}
+
+@code {
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        public string? Name { get; set; }
+        
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        public string? Email { get; set; }
+        
+        [Required(ErrorMessage = "Subject is required")]
+        public string? Subject { get; set; }
+        
+        [Required(ErrorMessage = "Message is required")]
+        public string? Message { get; set; }
+    }
+
+    [SupplyParameterFromForm]
+    private ContactModel contactModel { get; set; } = new();
+    
+    private string? submitMessage;
+    private string? errorMessage;
+
+    private void CreateEmail()
+    {
+        // Clear previous messages
+        submitMessage = null;
+        errorMessage = null;
+        
+        // ✅ Show success message (OnValidSubmit only fires when form is valid)
+        submitMessage = "✅ Your message has been submitted successfully!";
+
+        // ✅ Log debug message
+        Logger.LogInformation("Submit button clicked. Name: {Name}, Email: {Email}, Subject: {Subject}",
+            contactModel.Name, contactModel.Email, contactModel.Subject);
+            
+        // Reset form after successful submission (optional)
+        contactModel = new ContactModel();
+    }
+}
