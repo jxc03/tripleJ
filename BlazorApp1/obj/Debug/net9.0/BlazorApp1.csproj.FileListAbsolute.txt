@@ -80,6 +80,5 @@ C:\Users\jcari\Documents\tripleJ\blazorapp1\bin\Debug\net9.0\MailKit.dll
 C:\Users\jcari\Documents\tripleJ\blazorapp1\bin\Debug\net9.0\MimeKit.dll
 C:\Users\jcari\Documents\tripleJ\blazorapp1\obj\Debug\net9.0\BlazorApp1.csproj.AssemblyReference.cache
 C:\Users\jcari\Documents\tripleJ\blazorapp1\obj\Debug\net9.0\BlazorApp1.csproj.Up2Date
-C:\Users\jcari\Documents\tripleJ\blazorapp1\obj\Debug\net9.0\scopedcss\Components\Pages\Contact.razor.rz.scp.css
-C:\Users\jcari\Documents\tripleJ\blazorapp1\obj\Debug\net9.0\compressed\ysu4imbah3-rupvqrgr3d.gz
-C:\Users\jcari\Documents\tripleJ\blazorapp1\obj\Debug\net9.0\compressed\uxxncn5hnr-rupvqrgr3d.gz
+C:\Users\jcari\Documents\tripleJ\BlazorApp1\obj\Debug\net9.0\compressed\ysu4imbah3-uin0erjt0i.gz
+C:\Users\jcari\Documents\tripleJ\BlazorApp1\obj\Debug\net9.0\compressed\uxxncn5hnr-uin0erjt0i.gz

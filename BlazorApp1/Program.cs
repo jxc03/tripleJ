@@ -1,10 +1,17 @@
 using BlazorApp1.Components;
-
+using BlazorApp1.Components.Services;
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Add email configuration from appsettings.json
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+// Register the email service for dependency injection
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
